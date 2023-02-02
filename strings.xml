@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">iRoutine</string>
+    <string name="Welcome"><b>Welcome, Human!</b></string>
+    <string name="title_activity_addprogress">Addprogress</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="title_activity_view_reports">ViewReports</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_calender_vieow">CalenderVieow</string>
+</resources>
