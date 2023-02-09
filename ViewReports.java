@@ -17,14 +17,19 @@ import android.view.View;
 import android.view.WindowInsets;
 //import android.widget.ArrayAdapter;
 //import android.widget.CompoundButton;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 //import android.widget.RadioButton;
 //import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 //import android.widget.Toast;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 //import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.snackbar.Snackbar;
 import com.harrisbasra.iroutine.databinding.ActivityViewReportsBinding;
 
 //import org.w3c.dom.Text;
@@ -34,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 //import java.util.ArrayList;
 //import java.util.Arrays;
+import java.lang.reflect.Array;
 import java.util.Vector;
 
 /**
@@ -165,22 +171,6 @@ public class ViewReports extends AppCompatActivity {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
 
-        FloatingActionButton f60038 = findViewById(R.id.floatingActionButton5);
-        f60038.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-//        GestureDetector gestureDetector;
-//        gestureDetector = new GestureDetector(this, new SwipeGestureDetector());
-//        t342534.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                return gestureDetector.onTouchEvent(event);
-//            }
-//        });
-
         //////////////////////////////////////////////////////////////////DECLARATIONS////////////////////////////////////////////////////////////////
 
 
@@ -191,8 +181,19 @@ public class ViewReports extends AppCompatActivity {
         TextView sfnjkvs = findViewById(R.id.textView7);
         Vector<MyOwnHandMadeMap> BIGDATA = new Vector<MyOwnHandMadeMap>();
         Vector<Vector<String>> GameChangesHere = null;
-        int IteratorOfDate = 0;
-        int IteratorOfTask = 0;
+        final int[] IteratorOfDate = {0};
+        final int[] IteratorOfTask = {0};
+
+
+//        GestureDetector gestureDetector;
+//        gestureDetector = new GestureDetector(this, new SwipeGestureDetector());
+//        t342534.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return gestureDetector.onTouchEvent(event);
+//            }
+//        });
+
 
         /////////////////////////////////////////////////////////////////STRUCT POPULATOR/////////////////////////////////////////////////////////
 
@@ -228,6 +229,7 @@ public class ViewReports extends AppCompatActivity {
         catch (IOException e) {
             e.printStackTrace();
         }
+        if (!fg797[0].equals(null)){
         String NameArray[] = ArrayMaker(fg797[0]);
         String ValueArray[] = ArrayMaker(fg888[0]);
         for(int i=0;i<NameArray.length;i++){
@@ -258,14 +260,14 @@ public class ViewReports extends AppCompatActivity {
                 }
                 if(FS.equals("2")){
                     t87654.setText("DATE VIEW");
-                    if(IteratorOfDate%10==0)
+                    if(IteratorOfDate[0] ==0)
                         sfnjkvs.setText("1st");
-                    else if(IteratorOfDate%10==1)
+                    else if(IteratorOfDate[0] ==1)
                         sfnjkvs.setText("2nd");
-                    else if(IteratorOfDate%10==2)
+                    else if(IteratorOfDate[0] ==2)
                         sfnjkvs.setText("3rd");
                     else
-                        sfnjkvs.setText(String.valueOf(IteratorOfDate)+"th");
+                        sfnjkvs.setText(String.valueOf(IteratorOfDate[0])+"th");
                     FileOutputStream fos = null;
                     try {
                         fos = openFileOutput("FS.txt", Context.MODE_PRIVATE);
@@ -278,7 +280,7 @@ public class ViewReports extends AppCompatActivity {
                 }
                 else {
                     t87654.setText("TASK VIEW");
-                    sfnjkvs.setText(String.valueOf(BIGDATA.get(IteratorOfTask).Name));
+                    sfnjkvs.setText(String.valueOf(BIGDATA.get(IteratorOfTask[0]).Name));
                     ////////////////////////////////////////////////////
                     FileOutputStream fos = null;
                     try {
@@ -289,8 +291,6 @@ public class ViewReports extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-
                 }
             }
         });
@@ -318,26 +318,195 @@ public class ViewReports extends AppCompatActivity {
         }
 
         if(FS.equals("1")){
-            if(IteratorOfDate%10==0)
+            if(IteratorOfDate[0] ==0)
                 sfnjkvs.setText("1st");
-            else if(IteratorOfDate%10==1)
+            else if(IteratorOfDate[0] ==1)
                 sfnjkvs.setText("2nd");
-            else if(IteratorOfDate%10==2)
+            else if(IteratorOfDate[0] ==2)
                 sfnjkvs.setText("3rd");
             else
-                sfnjkvs.setText(String.valueOf(IteratorOfDate)+"th");
+                sfnjkvs.setText(String.valueOf(IteratorOfDate[0]+1)+"th");
         }
         else {
-            sfnjkvs.setText(String.valueOf(BIGDATA.get(IteratorOfTask).Name));
+            sfnjkvs.setText(String.valueOf(BIGDATA.get(IteratorOfTask[0]).Name));
         }
+        /////////////////////////////////////////////////////////////////////POPULATE THE ROUND BUTTON////////////////////////////////////////
+        FloatingActionButton f60038 = findViewById(R.id.floatingActionButton5);
 
+        f60038.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String GHJKL = "";
+                try {
+                    FileInputStream fin = openFileInput("FS.txt");
+                    int a;
+                    StringBuilder temp = new StringBuilder();
+                    while ((a = fin.read()) != -1) {
+                        temp.append((char)a);
+                    }
+                    if(temp.toString()!="") {
+                        GHJKL = temp.toString();
+                    }
+                    fin.close();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
 
+                if(GHJKL.equals("1")){
 
+                    Vector<String> DaalneWale = new Vector<String>();
+                    for (int o=0;o<BIGDATA.size();o++){
+                        if(BIGDATA.get(o).Val.charAt(IteratorOfDate[0])=='1'){
+                            DaalneWale.add(BIGDATA.get(o).Name);
+                        }
+                    }
+                    ListView okbtw = findViewById(R.id.lv11);
+                    ArrayAdapter<String> arr;
+                    String UIO[] = new String[DaalneWale.size()];
+                    for(int i=0;i< DaalneWale.size();i++){
+                        UIO[i]=DaalneWale.get(i);
+                    }
 
+                    arr= new ArrayAdapter<String>(ViewReports.this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,UIO );
+                    okbtw.setAdapter(arr);
+                }
+                else {
+                    Vector<String> DaalneWale = new Vector<String>();
+                    for (int o=0;o<31;o++){
+                        if(BIGDATA.get(IteratorOfTask[0]).Val.charAt(o)=='1'){
+                            DaalneWale.add("Day # " + String.valueOf(o+1)+" of Month");
+                        }
+                    }
+                    ListView okbtw = findViewById(R.id.lv11);
+                    ArrayAdapter<String> arr;
+                    String UIO[] = new String[DaalneWale.size()];
+                    for(int i=0;i< DaalneWale.size();i++){
+                        UIO[i]=DaalneWale.get(i);
+                    }
+                    arr= new ArrayAdapter<String>(ViewReports.this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,UIO );
+                    okbtw.setAdapter(arr);
+                }
+            }
+        });
+        Button bprev = (Button) findViewById(R.id.button5);
+        Button bnext = (Button) findViewById(R.id.button6);
+        bprev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String KOP="2";
+                try {
+                    FileInputStream fin = openFileInput("FS.txt");
+                    int a;
+                    StringBuilder temp = new StringBuilder();
+                    while ((a = fin.read()) != -1) {
+                        temp.append((char)a);
+                    }
+                    if(temp.toString()!="") {
+                        KOP = temp.toString();
+                    }
+                    fin.close();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if(KOP.equals("1")){
+                    if(IteratorOfDate[0] > 0){
+                        IteratorOfDate[0]--;
+                        if(IteratorOfDate[0] ==0)
+                            sfnjkvs.setText("1st");
+                        else if(IteratorOfDate[0] ==1)
+                            sfnjkvs.setText("2nd");
+                        else if(IteratorOfDate[0] ==2)
+                            sfnjkvs.setText("3rd");
+                        else
+                            sfnjkvs.setText(String.valueOf(IteratorOfDate[0]+1)+"th");
+                    }
+                    else if(IteratorOfDate[0]==0){
+                        IteratorOfDate[0] =30;
+                        if(IteratorOfDate[0] ==0)
+                            sfnjkvs.setText("1st");
+                        else if(IteratorOfDate[0] ==1)
+                            sfnjkvs.setText("2nd");
+                        else if(IteratorOfDate[0] ==2)
+                            sfnjkvs.setText("3rd");
+                        else
+                            sfnjkvs.setText(String.valueOf(IteratorOfDate[0]+1)+"th");
+                    }
+                }
+                else {
+                    if (IteratorOfTask[0] > 0) {
+                        IteratorOfTask[0]--;
+                        sfnjkvs.setText(String.valueOf(BIGDATA.get(IteratorOfTask[0]).Name));
+                    } else if (IteratorOfTask[0] == 0) {
+                        IteratorOfTask[0] = BIGDATA.size() - 1;
+                        sfnjkvs.setText(String.valueOf(BIGDATA.get(IteratorOfTask[0]).Name));
+                    }
+                }
+                f60038.performClick();
+            }
+        });
+        bnext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String KOP="2";
+                try {
+                    FileInputStream fin = openFileInput("FS.txt");
+                    int a;
+                    StringBuilder temp = new StringBuilder();
+                    while ((a = fin.read()) != -1) {
+                        temp.append((char)a);
+                    }
+                    if(temp.toString()!="") {
+                        KOP = temp.toString();
+                    }
+                    fin.close();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if(KOP.equals("1")){
+                    if(IteratorOfDate[0] <30){
+                        IteratorOfDate[0]++;
+                        if(IteratorOfDate[0] ==0)
+                            sfnjkvs.setText("1st");
+                        else if(IteratorOfDate[0] ==1)
+                            sfnjkvs.setText("2nd");
+                        else if(IteratorOfDate[0] ==2)
+                            sfnjkvs.setText("3rd");
+                        else
+                            sfnjkvs.setText(String.valueOf(IteratorOfDate[0]+1)+"th");
+                    }
+                    else if(IteratorOfDate[0]==30){
+                        IteratorOfDate[0] =0;
+                        if(IteratorOfDate[0] ==0)
+                            sfnjkvs.setText("1st");
+                        else if(IteratorOfDate[0] ==1)
+                            sfnjkvs.setText("2nd");
+                        else if(IteratorOfDate[0] ==2)
+                            sfnjkvs.setText("3rd");
+                        else
+                            sfnjkvs.setText(String.valueOf(IteratorOfDate[0]+1)+"th");
+                    }
+                }
+                else{
+                    if(IteratorOfTask[0] <BIGDATA.size()-1){
+                        IteratorOfTask[0]++;
+                        sfnjkvs.setText(String.valueOf(BIGDATA.get(IteratorOfTask[0]).Name));
+                    }
+                    else if(IteratorOfTask[0]==BIGDATA.size()-1){
+                        IteratorOfTask[0]=0;
+                        sfnjkvs.setText(String.valueOf(BIGDATA.get(IteratorOfTask[0]).Name));
+                    }
+            }
+                f60038.performClick();
+            }
 
-
-
-
+        });
+        }
+        else{
+            Toast.makeText(this, "No Data Rn, See ya Soon!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
